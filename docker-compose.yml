@@ -1,0 +1,42 @@
+services:
+  department_db:
+    image: mysql:8.0
+    container_name: department_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DEP_DATABASE}
+      MYSQL_USER: ${MYSQL_DEP_USER}
+      MYSQL_PASSWORD: ${MYSQL_DEP_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - department_data:/var/lib/mysql
+    networks:
+      - app_network
+    command: --default-authentication-plugin=mysql_native_password
+
+  employee_db:
+    image: mysql:8.0
+    container_name: employee_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_EMP_DATABASE}
+      MYSQL_USER: ${MYSQL_EMP_USER}
+      MYSQL_PASSWORD: ${MYSQL_EMP_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - employee_data:/var/lib/mysql
+    networks:
+      - app_network
+    command: --default-authentication-plugin=mysql_native_password
+
+volumes:
+  department_data:
+  employee_data:
+
+networks:
+  app_network:
+    driver: bridge
